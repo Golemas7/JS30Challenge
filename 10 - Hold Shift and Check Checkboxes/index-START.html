@@ -96,6 +96,60 @@
   </div>
 
 <script>
+  const inbox = document.querySelector('.inbox');
+  let keyPressed = false;
+  let checkedElements = [];
+
+  function checkElement(e) {
+    if(e.target.checked === true)
+      checkedElements.push(e.target);
+    else {
+      checkedElements = checkedElements.filter(item => item !== e.target);
+    }
+    console.log(checkedElements);
+  }
+
+  function checkElements() {
+    if(keyPressed) {
+      const allElements = Array.from(document.querySelectorAll('input'));
+      let checkedElementsArray = Array.from(checkedElements);
+      if(checkedElementsArray.length > 2)
+        checkedElementsArray = checkedElementsArray.slice(checkedElementsArray.length-2);
+      console.log(checkedElementsArray);
+      for(let i = 0; i < allElements.length; i++) {
+        if(checkedElementsArray[1] === allElements[i]) {
+          for (let j = 0; j < allElements.length; j++) {
+            if(checkedElementsArray[0] === allElements[j]) {
+              if(i < j)
+                for (let k = i; k < j; k++) {
+                  allElements[k].checked = true;
+                }
+              else
+                for (let k = i; k > j; k--) {
+                  allElements[k].checked = true;
+                }
+            }
+          }
+        }
+      }
+      checkedElements = checkedElementsArray.slice(checkedElementsArray.length-1);
+    }
+  }
+
+  function keyIsPressed(e) {
+    if (e.keyCode === 16)
+      keyPressed = true;
+  }
+
+  function keyIsNotPressed(e) {
+    if (e.keyCode === 16)
+      keyPressed = false;
+  }
+
+  inbox.addEventListener('keydown', keyIsPressed);
+  inbox.addEventListener('keyup', keyIsNotPressed);
+  inbox.addEventListener('change', checkElement);
+  inbox.addEventListener('change', checkElements);
 </script>
 </body>
 </html>
